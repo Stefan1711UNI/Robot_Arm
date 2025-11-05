@@ -36,39 +36,3 @@ def stop_servo(servo):
     except Exception:
         # ignore if already deinitialized
         pass
-
-#Test function to sweep servo
-def sweep_servo(servo, start=0, end=180, step=1, delay=0.02):
-    """
-    Smoothly sweep servo from start to end (inclusive).
-    step: positive int. If start > end, the function will still sweep by negating step.
-    delay: pause between steps (seconds).
-    """
-    if step == 0:
-        raise ValueError("step must be non-zero")
-    if start < end:
-        rng = range(start, end + 1, abs(step))
-    else:
-        rng = range(start, end - 1, -abs(step))
-    for a in rng:
-        set_servo_angle(servo, a)
-        sleep(delay)
-
-
-def main():
-    base = create_servo(1)
-    #Sets angle to 0 
-    set_servo_angle(base, 0)
-    #Break
-    sleep(1)
-
-    try:
-        while True:
-            #Sweep base from 0 to 180
-            sweep_servo(base, 0, 180, step=2, delay=0.01)
-    except KeyboardInterrupt:
-        print("Keyboard interrupt")
-        #Stops servo
-        stop_servo(base)
-
-main()

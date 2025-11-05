@@ -1,0 +1,6 @@
+freq=50, min_duty=1802, max_duty=7864
+
+Base: 1150: 8600
+joint 1: 1150 : 8600
+joint 2: 
+
