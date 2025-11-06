@@ -34,10 +34,11 @@ def parse_request(request_str):
         return angles # No '?' found
         
     query_str = request_str[query_start+1:]
-    
+    #Removes 'HTTP/1.1' from query str
+    clean_query_str = query_str.split(' ')[0]
+
     # Split by '&' to get "j0=90", "j1=45", etc.
-    commands = query_str.split('&')
-    
+    commands = clean_query_str.split('&')
     for cmd in commands:
         try:
             # Split "j0=90" into "j0" and "90"
@@ -63,6 +64,7 @@ def web_control():
     s = socket.socket()
     s.bind(addr)
     s.listen(1)
+    print("Listening:")
     while True:
         try:
             conn, address = s.accept()
@@ -72,7 +74,7 @@ def web_control():
             angles_to_set = parse_request(request_line)
 
             if angles_to_set:
-                print("RECIVED VALUES: ", angles_to_set[0])
+                print("RECIVED VALUES: ", angles_to_set)
 
             # --Activate Servos--
             # if angles_to_set:
@@ -95,9 +97,11 @@ def web_control():
             conn.send('HTTP/1.0 200 OK\r\nContent-type: text/plain\r\n\r\nOK')
             conn.close()
         
-        except OSError as e:
-            conn.close()
-            print("Connection closed")
+        except Exception as e:
+            print(f"!!! LOOP CRASHED: {e} !!!")
+            if 'conn' in locals(): 
+                conn.close()
+            print("Connection closed due to error")
 
         
 web_control()
