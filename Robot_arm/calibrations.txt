@@ -4,3 +4,4 @@ Base: 1150: 8600
 joint 1: 1150 : 8600
 joint 2: 
 
+joint 3 (wrist control small servo): 1150 : 7840
